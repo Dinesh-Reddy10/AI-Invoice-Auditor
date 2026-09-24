@@ -29,7 +29,6 @@ graph TD
 ## Features
 * **Multi-format Support:** PDF, PNG, JPG.
 * **Deterministic Parsing:** Safe extraction of line items, totals, and fields.
-* **:** Supports English, Hindi, Telugu, Tamil, and Kannada.
 * **ERP Mock:** FastAPI backend simulating an enterprise resource system.
 * **Agentic Workflow:** Built with LangGraph.
 * **RAG Q&A:** Chat with your processed invoice using FAISS vector search.
@@ -71,7 +70,6 @@ graph TD
 │   └── rag_service.py          # FAISS indexing & QA
 ├── services/                   # Core business logic
 │   ├── extraction_service.py
-│   ├── translation_service.py
 │   ├── validation_service.py
 │   └── erp_service.py
 ├── workflow/
@@ -131,7 +129,6 @@ When an invoice is uploaded, the LangGraph workflow triggers. It sequentially ru
 
 ## Limitations
 * OCR relies on Tesseract, which may struggle with highly stylized invoices.
-* support is currently restricted to English and the four supported Indic languages for simplicity.
 * The mock ERP has a very small, fictional dataset.
 
 ## Future Improvements
