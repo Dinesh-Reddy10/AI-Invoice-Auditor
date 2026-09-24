@@ -1,0 +1,20 @@
+[
+  {
+    "vendor_id": "VEND001",
+    "name": "Acme Corp",
+    "country": "USA",
+    "status": "ACTIVE"
+  },
+  {
+    "vendor_id": "VEND002",
+    "name": "Global Supplies Ltd",
+    "country": "UK",
+    "status": "ACTIVE"
+  },
+  {
+    "vendor_id": "VEND003",
+    "name": "TechHardware Inc",
+    "country": "India",
+    "status": "ACTIVE"
+  }
+]

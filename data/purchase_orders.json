@@ -1,0 +1,30 @@
+[
+  {
+    "po_number": "PO-1001",
+    "vendor_id": "VEND001",
+    "currency": "USD",
+    "items": [
+      {"item_code": "ITEM001", "quantity": 10, "unit_price": 100.0},
+      {"item_code": "ITEM002", "quantity": 5, "unit_price": 50.0}
+    ],
+    "total_amount": 1250.0
+  },
+  {
+    "po_number": "PO-1002",
+    "vendor_id": "VEND002",
+    "currency": "GBP",
+    "items": [
+      {"item_code": "WIDGET-A", "quantity": 100, "unit_price": 2.5}
+    ],
+    "total_amount": 250.0
+  },
+  {
+    "po_number": "PO-1003",
+    "vendor_id": "VEND003",
+    "currency": "INR",
+    "items": [
+      {"item_code": "LAPTOP-01", "quantity": 5, "unit_price": 60000.0}
+    ],
+    "total_amount": 300000.0
+  }
+]
