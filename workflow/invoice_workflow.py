@@ -7,7 +7,6 @@ from litellm import completion
 
 from models.invoice_models import WorkflowState, FinalDecision
 from services.extraction_service import ExtractionService
-from services.translation_service import TranslationService
 from services.validation_service import ValidationService
 from services.erp_service import ERPService
 from configs.settings import settings
@@ -15,7 +14,6 @@ from configs.settings import settings
 class InvoiceWorkflow:
     def __init__(self):
         self.extraction_service = ExtractionService()
-        self.translation_service = TranslationService()
         self.validation_service = ValidationService()
         self.erp_service = ERPService()
         
@@ -23,7 +21,6 @@ class InvoiceWorkflow:
         workflow = StateGraph(WorkflowState)
         
         workflow.add_node("extract", self.extract_node)
-        workflow.add_node("translate", self.translate_node)
         workflow.add_node("validate", self.validate_node)
         workflow.add_node("erp_validate", self.erp_validate_node)
         workflow.add_node("agentic_decision", self.agentic_decision_node)
@@ -31,8 +28,7 @@ class InvoiceWorkflow:
         
         workflow.set_entry_point("extract")
         
-        workflow.add_edge("extract", "translate")
-        workflow.add_edge("translate", "validate")
+        workflow.add_edge("extract", "validate")
         workflow.add_edge("validate", "erp_validate")
         workflow.add_edge("erp_validate", "agentic_decision")
         workflow.add_edge("agentic_decision", "report")
@@ -46,14 +42,6 @@ class InvoiceWorkflow:
             return {"raw_text": raw_text, "extracted_invoice": invoice}
         except Exception as e:
             return {"error": f"Extraction failed: {str(e)}"}
-
-    def translate_node(self, state: WorkflowState) -> Dict[str, Any]:
-        if state.error or not state.extracted_invoice: return {}
-        try:
-            translated_invoice = self.translation_service.translate_invoice(state.raw_text, state.extracted_invoice)
-            return {"extracted_invoice": translated_invoice}
-        except Exception as e:
-             return {"error": f"Translation failed: {str(e)}"}
 
     def validate_node(self, state: WorkflowState) -> Dict[str, Any]:
         if state.error or not state.extracted_invoice: return {}

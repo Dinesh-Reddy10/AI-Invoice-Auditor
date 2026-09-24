@@ -68,7 +68,7 @@ if st.session_state.processed_state:
         col1, col2 = st.columns([1, 1])
         
         with col1:
-            st.header("1. Extraction & Translation")
+            st.header("1. Extraction")
             inv = state.extracted_invoice
             st.json({
                 "invoice_number": inv.invoice_number,
@@ -79,10 +79,8 @@ if st.session_state.processed_state:
                 "subtotal": inv.subtotal,
                 "tax": inv.tax,
                 "total_amount": inv.total_amount,
-                "detected_language": inv.detected_language,
-                "was_translated": inv.was_translated,
-                "translation_engine": inv.translation_engine
-            })
+"was_translated": inv.was_translated,
+})
             
             st.subheader("Line Items")
             st.dataframe([item.dict() for item in inv.line_items], use_container_width=True)

@@ -9,3 +9,7 @@ in terminal 2
 .\venv\Scripts\activate --- activate venv
 streamlit run app.py --- run streamlit
 
+mock erp swagger
+ http://localhost:8000/docs
+ or 
+ http://127.0.0.1:8000/docs

@@ -1,16 +1,14 @@
 # AI Invoice Auditor
 
 ## Overview
-The AI Invoice Auditor is an automated, multilingual invoice validation system. It is designed to act as a complete end-to-end solo portfolio project that ingests invoices, extracts their contents, translates them into English if needed, performs rigorous deterministic math and data checks, compares against a mock ERP system, and uses an agentic LLM workflow to summarize findings and answer questions.
+The AI Invoice Auditor is an automated, invoice validation system. It is designed to act as a complete end-to-end solo portfolio project that ingests invoices, extracts their contents, performs rigorous deterministic math and data checks, compares against a mock ERP system, and uses an agentic LLM workflow to summarize findings and answer questions.
 
 ## Problem
-Processing invoices manually is a tedious, error-prone, and slow process. This is especially difficult when dealing with international vendors who submit invoices in various languages or formats (PDFs, Images). An AI-assisted auditor reduces this workload by flagging discrepancies instantly.
+Processing invoices manually is a tedious, error-prone, and slow process. This is especially difficult when dealing with various vendor formats (PDFs, Images). An AI-assisted auditor reduces this workload by flagging discrepancies instantly.
 
 ## Solution
 This project automatically:
 1. Extracts text from PDFs and Images.
-2. Identifies the source language (including Indic languages like Hindi, Telugu, Kannada, Tamil).
-3. Translates non-English fields into English using MarianMT (with LLM fallback).
 4. Deterministically validates calculations (subtotals, tax, total).
 5. Cross-checks values (Price, Qty, Vendor, PO) against a mock ERP backend.
 6. Makes an `APPROVE`, `MANUAL_REVIEW`, or `REJECT` decision.
@@ -21,7 +19,6 @@ This project automatically:
 graph TD
     A["Invoice Upload"] --> B["Extraction + OCR"]
     B --> C["Pydantic Invoice"]
-    C --> D["Translation (MarianMT/LLM)"]
     D --> E["Deterministic Validation"]
     E --> F["Mock ERP Validation"]
     F --> G["LangGraph Decision Node"]
@@ -32,7 +29,7 @@ graph TD
 ## Features
 * **Multi-format Support:** PDF, PNG, JPG.
 * **Deterministic Parsing:** Safe extraction of line items, totals, and fields.
-* **Multilingual:** Supports English, Hindi, Telugu, Tamil, and Kannada.
+* **:** Supports English, Hindi, Telugu, Tamil, and Kannada.
 * **ERP Mock:** FastAPI backend simulating an enterprise resource system.
 * **Agentic Workflow:** Built with LangGraph.
 * **RAG Q&A:** Chat with your processed invoice using FAISS vector search.
@@ -58,7 +55,6 @@ graph TD
 * **LangChain & FAISS** (RAG/QA)
 * **Pydantic** (Data modeling)
 * **PyMuPDF & Pytesseract** (OCR and parsing)
-* **Transformers (MarianMT)** (Local translation)
 * **LiteLLM / OpenRouter** (LLM connectivity)
 
 ## Project Structure
@@ -131,11 +127,11 @@ pytest tests/ -v
 ```
 
 ## Workflow Details
-When an invoice is uploaded, the LangGraph workflow triggers. It sequentially runs the extraction service (falling back to OCR for images). The parsed data is structured into a Pydantic object, translating vendor names and descriptions via MarianMT. Deterministic math validates the invoice logic. Then, the Mock ERP endpoint is queried. Finally, the agentic node processes all deterministic results to formulate a final conclusion (Approve/Reject/Review) which is returned to the user in a JSON report and indexed for Q&A.
+When an invoice is uploaded, the LangGraph workflow triggers. It sequentially runs the extraction service (falling back to OCR for images). The parsed data is structured into a Pydantic object. Deterministic math validates the invoice logic. Then, the Mock ERP endpoint is queried. Finally, the agentic node processes all deterministic results to formulate a final conclusion (Approve/Reject/Review) which is returned to the user in a JSON report and indexed for Q&A.
 
 ## Limitations
 * OCR relies on Tesseract, which may struggle with highly stylized invoices.
-* Multilingual support is currently restricted to English and the four supported Indic languages for simplicity.
+* support is currently restricted to English and the four supported Indic languages for simplicity.
 * The mock ERP has a very small, fictional dataset.
 
 ## Future Improvements

@@ -23,9 +23,6 @@ class ExtractedInvoice(BaseModel):
     line_items: List[LineItem] = Field(default_factory=list, description="List of items in the invoice")
 
     # Translation metadata
-    detected_language: str = "en"
-    was_translated: bool = False
-    translation_engine: Optional[str] = None
     translation_confidence: Optional[float] = None
 
 
