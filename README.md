@@ -19,14 +19,14 @@ This project automatically:
 ## Architecture
 ```mermaid
 graph TD
-    A[Invoice Upload] --> B[Extraction + OCR]
-    B --> C[Pydantic Invoice]
-    C --> D[Translation (MarianMT/LLM)]
-    D --> E[Deterministic Validation]
-    E --> F[Mock ERP Validation]
-    F --> G[LangGraph Decision Node]
-    G --> H[Final Report JSON]
-    H --> I[FAISS Q&A (RAG)]
+    A["Invoice Upload"] --> B["Extraction + OCR"]
+    B --> C["Pydantic Invoice"]
+    C --> D["Translation (MarianMT/LLM)"]
+    D --> E["Deterministic Validation"]
+    E --> F["Mock ERP Validation"]
+    F --> G["LangGraph Decision Node"]
+    G --> H["Final Report JSON"]
+    H --> I["FAISS Q&A (RAG)"]
 ```
 
 ## Features
