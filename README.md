@@ -19,7 +19,7 @@ This project automatically:
 graph TD
     A["Invoice Upload"] --> B["Extraction + OCR"]
     B --> C["Pydantic Invoice"]
-    D --> E["Deterministic Validation"]
+    C --> E["Deterministic Validation"]
     E --> F["Mock ERP Validation"]
     F --> G["LangGraph Decision Node"]
     G --> H["Final Report JSON"]
