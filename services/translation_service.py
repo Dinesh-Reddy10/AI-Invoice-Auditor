@@ -49,7 +49,7 @@ class TranslationService:
             
         try:
             response = completion(
-                model=f"openrouter/{settings.openrouter_model}",
+                model=settings.openrouter_model if settings.openrouter_model.startswith("openrouter/") else f"openrouter/{settings.openrouter_model}",
                 messages=[
                     {"role": "system", "content": "You are a professional translator. Translate the following text to English. Return ONLY the English translation, no extra text."},
                     {"role": "user", "content": f"Text ({lang_code}): {text}"}
@@ -64,57 +64,10 @@ class TranslationService:
             return text
 
     def translate_invoice(self, raw_text: str, invoice: ExtractedInvoice) -> ExtractedInvoice:
-        """Detects language and translates vendor_name and line item descriptions."""
-        
-        # 1. Detect Language
-        try:
-            lang_code = langdetect.detect(raw_text)
-        except langdetect.lang_detect_exception.LangDetectException:
-            lang_code = "en"
-            
-        invoice.detected_language = lang_code
-        
-        # If English or unsupported (not in our specific Indic list and not english), just return
-        # Actually, if it's not English, let's try to translate it if it's in our supported list
-        if lang_code == "en":
-            invoice.was_translated = False
-            return invoice
-            
-        if lang_code not in self.supported_languages:
-            # Unsupported language, we won't translate but we note it
-            invoice.was_translated = False
-            invoice.translation_engine = "UNSUPPORTED"
-            return invoice
-            
-        # 2. Translate fields
-        engine_used = "MarianMT"
-        try:
-            # Try MarianMT first
-            translated_vendor = self._translate_text_marian(invoice.vendor_name, lang_code)
-            
-            # If MarianMT failed to load, it returns the original text. Let's fallback if they are identical and it's not English text
-            if translated_vendor == invoice.vendor_name:
-                 engine_used = "LLM Fallback"
-                 translated_vendor = self._translate_text_llm(invoice.vendor_name, lang_code)
-                 
-            invoice.vendor_name = translated_vendor
-            
-            for item in invoice.line_items:
-                if engine_used == "MarianMT":
-                    t_desc = self._translate_text_marian(item.description, lang_code)
-                    if t_desc == item.description:
-                        t_desc = self._translate_text_llm(item.description, lang_code)
-                        engine_used = "LLM Fallback"
-                    item.description = t_desc
-                else:
-                    item.description = self._translate_text_llm(item.description, lang_code)
-
-            invoice.was_translated = True
-            invoice.translation_engine = engine_used
-            invoice.translation_confidence = 0.85 if engine_used == "MarianMT" else 0.95
-            
-        except Exception as e:
-            print(f"Translation process failed: {e}")
-            invoice.was_translated = False
-            
+        """User explicitly requested to disable all translation features and keep it English only."""
+        invoice.detected_language = "en"
+        invoice.was_translated = False
+        invoice.translation_engine = None
         return invoice
+
+

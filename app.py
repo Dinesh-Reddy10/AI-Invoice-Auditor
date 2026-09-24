@@ -16,7 +16,7 @@ workflow_service, rag_service = get_services()
 st.set_page_config(page_title="AI Invoice Auditor", layout="wide", page_icon="🧾")
 
 st.title("🧾 AI Invoice Auditor")
-st.markdown("Automated Multilingual Invoice Processing & Auditing Pipeline")
+st.markdown("Automated Invoice Processing & Auditing Pipeline")
 
 # Basic sanity check
 if not settings.openrouter_api_key:

@@ -23,8 +23,13 @@ class ERPService:
             vendor_data = vendor_response.json() if vendor_response.status_code == 200 else {}
             
             # Compare Vendor Name (Fuzzy/basic check)
-            if invoice.vendor_id and invoice.vendor_id != po_data['vendor_id']:
+            if invoice.vendor_id and po_data.get('vendor_id') and invoice.vendor_id != po_data['vendor_id']:
                  discrepancies.append(Discrepancy(type="vendor_mismatch", field="vendor_id", invoice_value=invoice.vendor_id, erp_value=po_data['vendor_id']))
+                 
+            if invoice.vendor_name and vendor_data and vendor_data.get('name'):
+                 # Case insensitive and stripped check
+                 if invoice.vendor_name.strip().lower() not in vendor_data['name'].lower() and vendor_data['name'].lower() not in invoice.vendor_name.strip().lower():
+                     discrepancies.append(Discrepancy(type="vendor_name_mismatch", field="vendor_name", invoice_value=invoice.vendor_name, erp_value=vendor_data['name']))
                  
             # Compare Currency
             if invoice.currency != po_data['currency']:

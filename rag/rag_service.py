@@ -82,7 +82,7 @@ Answer:"""
 
         try:
             response = completion(
-                model=f"openrouter/{settings.openrouter_model}",
+                model=settings.openrouter_model if settings.openrouter_model.startswith("openrouter/") else f"openrouter/{settings.openrouter_model}",
                 messages=[{"role": "user", "content": prompt}],
                 api_key=settings.openrouter_api_key,
                 base_url="https://openrouter.ai/api/v1",

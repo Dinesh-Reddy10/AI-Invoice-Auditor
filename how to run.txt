@@ -1,0 +1,11 @@
+in terminal 1
+
+.\venv\Scripts\activate --- activate venv
+python api\mock_erp.py --- start mock erp server
+
+
+in terminal 2
+
+.\venv\Scripts\activate --- activate venv
+streamlit run app.py --- run streamlit
+
